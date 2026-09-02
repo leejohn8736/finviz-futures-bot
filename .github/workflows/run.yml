@@ -1,0 +1,31 @@
+name: Finviz 주소 알림 로봇
+
+on:
+  workflow_dispatch: # 직접 버튼 눌러서 즉시 실행도 가능
+  schedule:
+    - cron: '0 14 * * *' # 한국 시간 매일 밤 23:00 (UTC 14:00)
+    - cron: '0 21 * * *' # 한국 시간 매일 아침 06:00 (UTC 21:00)
+
+jobs:
+  run-bot:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: 코드 가져오기
+      uses: actions/checkout@v4
+
+    - name: 파이썬 준비하기
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.11'
+
+    - name: 필요 도구 설치하기
+      run: |
+        pip install curl_cffi
+
+    - name: 로봇 출발 및 텔레그램 발송
+      env:
+        TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+        TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+      run: |
+        python main.py
