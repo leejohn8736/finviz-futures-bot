@@ -1,10 +1,9 @@
-name: Finviz 주소 알림 로봇
+name: Finviz Futures Bot
 
 on:
-  workflow_dispatch: # 직접 버튼 눌러서 즉시 실행도 가능
-  schedule:
-    - cron: '0 14 * * *' # 한국 시간 매일 밤 23:00 (UTC 14:00)
-    - cron: '0 21 * * *' # 한국 시간 매일 아침 06:00 (UTC 21:00)
+  workflow_dispatch:          # 깃허브 탭에서 수동 실행 버튼
+  repository_dispatch:        # cron-job.org 외부 신호를 수신하는 설정[cite: 1]
+    types: [wake_up]
 
 jobs:
   run-bot:
@@ -12,12 +11,12 @@ jobs:
 
     steps:
     - name: 코드 가져오기
-      uses: actions/checkout@v4
+      uses: actions/checkout@v4[cite: 1]
 
     - name: 파이썬 준비하기
-      uses: actions/setup-python@v5
+      uses: actions/setup-python@v5[cite: 1]
       with:
-        python-version: '3.11'
+        python-version: '3.11'[cite: 1]
 
     - name: 필요 도구 설치하기
       run: |
@@ -25,7 +24,7 @@ jobs:
 
     - name: 로봇 출발 및 텔레그램 발송
       env:
-        TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
-        TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+        TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}[cite: 1]
+        TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}[cite: 1]
       run: |
-        python main.py
+        python main.py[cite: 1]
