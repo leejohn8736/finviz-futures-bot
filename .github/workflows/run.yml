@@ -1,9 +1,9 @@
 name: Finviz Futures Bot
 
 on:
-  workflow_dispatch:          # 깃허브 탭에서 수동 실행 버튼
-  repository_dispatch:        # cron-job.org 외부 신호를 수신하는 설정[cite: 1]
-    types: [wake_up]
+  workflow_dispatch:          # 깃허브 버튼 눌러서 직접 실행
+  repository_dispatch:        # cron-job.org 외부 신호 처리
+    types: [wake_up, trigger_briefing] # 두 가지 이벤트 신호를 모두 받도록 설정
 
 jobs:
   run-bot:
@@ -11,12 +11,12 @@ jobs:
 
     steps:
     - name: 코드 가져오기
-      uses: actions/checkout@v4[cite: 1]
+      uses: actions/checkout@v4
 
     - name: 파이썬 준비하기
-      uses: actions/setup-python@v5[cite: 1]
+      uses: actions/setup-python@v5
       with:
-        python-version: '3.11'[cite: 1]
+        python-version: '3.11'
 
     - name: 필요 도구 설치하기
       run: |
@@ -24,7 +24,7 @@ jobs:
 
     - name: 로봇 출발 및 텔레그램 발송
       env:
-        TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}[cite: 1]
-        TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}[cite: 1]
+        TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+        TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
       run: |
-        python main.py[cite: 1]
+        python main.py
